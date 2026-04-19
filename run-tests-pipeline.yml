@@ -1,0 +1,45 @@
+trigger:
+    - main
+
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    environmentId: '493ec420-26dc-ebc2-9bc0-11821149f051'
+    tenantId: '47f44079-0021-4177-80c9-68531941e357'
+
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Install .NET 8'
+    inputs:
+      version: 8.0.x
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Test Engine'
+    inputs:
+      command: 'build'
+      projects: 'src/PowerAppsTestEngine.sln'
+
+  - script: |
+      pwsh src/bin/Debug/PowerAppsTestEngine/playwright.ps1 install
+    displayName: 'Install Playwright browsers'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Tests'
+    inputs:
+      command: 'run'
+      workingDirectory: 'src/PowerAppsTestEngine'
+    env:
+      POWERAPPS_ENVIRONMENT_ID: $(environmentId)
+      POWERAPPS_TENANT_ID: $(tenantId)
+      POWERAPPS_TEST_ACCOUNT_USER: $(testAccountUser)      # set as secret variable
+      POWERAPPS_TEST_ACCOUNT_PASSWORD: $(testAccountPassword)  # set as secret variable
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/*.trx'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
+    condition: always()
