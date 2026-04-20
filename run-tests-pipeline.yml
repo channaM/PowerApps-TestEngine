@@ -1,14 +1,14 @@
 trigger:
-    - main
+  - main
 
-  pool:
-    vmImage: 'windows-latest'
+pool:
+  vmImage: 'windows-latest'
 
-  variables:
-    environmentId: '493ec420-26dc-ebc2-9bc0-11821149f051'
-    tenantId: '47f44079-0021-4177-80c9-68531941e357'
+variables:
+  environmentId: '493ec420-26dc-ebc2-9bc0-11821149f051'
+  tenantId: '47f44079-0021-4177-80c9-68531941e357'
 
-  steps:
+steps:
   - task: UseDotNet@2
     displayName: 'Install .NET 8'
     inputs:
@@ -32,8 +32,8 @@ trigger:
     env:
       POWERAPPS_ENVIRONMENT_ID: $(environmentId)
       POWERAPPS_TENANT_ID: $(tenantId)
-      POWERAPPS_TEST_ACCOUNT_USER: $(testAccountUser)      # set as secret variable
-      POWERAPPS_TEST_ACCOUNT_PASSWORD: $(testAccountPassword)  # set as secret variable
+      POWERAPPS_TEST_ACCOUNT_USER: $(testAccountUser)
+      POWERAPPS_TEST_ACCOUNT_PASSWORD: $(testAccountPassword)
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
