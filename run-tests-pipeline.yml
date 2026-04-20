@@ -5,8 +5,11 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  environmentId: '493ec420-26dc-ebc2-9bc0-11821149f051'
-  tenantId: '47f44079-0021-4177-80c9-68531941e357'
+  - group: PowerApps-SP-Secrets
+  - name: environmentId
+    value: '493ec420-26dc-ebc2-9bc0-11821149f051'
+  - name: tenantId
+    value: '5a926f23-0839-4500-b4b8-d0dec88134c1'
 
 steps:
   - task: UseDotNet@2
