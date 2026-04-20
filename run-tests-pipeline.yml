@@ -24,7 +24,7 @@ steps:
       projects: 'src/PowerAppsTestEngine.sln'
 
   - script: |
-      pwsh src/bin/Debug/PowerAppsTestEngine/playwright.ps1 install
+      pwsh src/PowerAppsTestEngine/bin/Debug/net8.0/playwright.ps1 install
     displayName: 'Install Playwright browsers'
 
   - task: DotNetCoreCLI@2
