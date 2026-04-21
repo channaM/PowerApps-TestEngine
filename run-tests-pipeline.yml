@@ -26,7 +26,7 @@ steps:
   - script: |
       PLAYWRIGHT=$(find src -name "playwright.ps1" 2>/dev/null | head -1)
       if [ -n "$PLAYWRIGHT" ]; then
-        /usr/local/bin/pwsh "$PLAYWRIGHT" install
+        /usr/local/bin/pwsh "$PLAYWRIGHT" install chromium
       else
         echo "playwright.ps1 not found, skipping"
       fi
