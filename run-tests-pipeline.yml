@@ -23,9 +23,18 @@ steps:
       command: 'build'
       projects: 'src/PowerAppsTestEngine.sln'
 
-  - script: |
-      pwsh src/PowerAppsTestEngine/bin/Debug/net8.0/playwright.ps1 install
+  - task: PowerShell@2
     displayName: 'Install Playwright browsers'
+    inputs:
+      targetType: 'inline'
+      script: |
+        $playwrightScript = Get-ChildItem -Path "src" -Recurse -Filter "playwright.ps1" | Select-Object -First 1
+        if ($playwrightScript) {
+          & $playwrightScript.FullName install
+        } else {
+          Write-Error "playwright.ps1 not found"
+          exit 1
+        }
 
   - task: DotNetCoreCLI@2
     displayName: 'Run Tests'
